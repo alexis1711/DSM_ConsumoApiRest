@@ -1,0 +1,22 @@
+package edu.udb.retrofitappcrud
+
+import retrofit2.Call
+import retrofit2.http.*
+
+interface AlumnoApi {
+
+    @GET("alumnos")
+    fun obtenerAlumnos(): Call<List<Alumno>>
+
+    @GET("alumnos/{id}")
+    fun obtenerAlumnoPorId(@Path("id") id: Int): Call<Alumno>
+
+    @POST("alumnos")
+    fun crearAlumno(@Body alumno: Alumno): Call<Alumno>
+
+    @PUT("alumnos/{id}")
+    fun actualizarAlumno(@Path("id") id: Int, @Body alumno: Alumno): Call<Alumno>
+
+    @PUT("alumnos/{id}")
+    fun eliminarAlumno(@Path("id") id: Int, @Body alumno: Alumno): Call<Void>
+}
