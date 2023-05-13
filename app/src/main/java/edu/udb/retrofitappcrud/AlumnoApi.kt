@@ -5,7 +5,7 @@ import retrofit2.http.*
 
 interface AlumnoApi {
 
-    @GET("alumnos")
+    @GET("/alumnos")
     fun obtenerAlumnos(): Call<List<Alumno>>
 
     @GET("alumnos/{id}")
@@ -17,6 +17,6 @@ interface AlumnoApi {
     @PUT("alumnos/{id}")
     fun actualizarAlumno(@Path("id") id: Int, @Body alumno: Alumno): Call<Alumno>
 
-    @PUT("alumnos/{id}")
-    fun eliminarAlumno(@Path("id") id: Int, @Body alumno: Alumno): Call<Void>
+    @DELETE("alumnos/{id}")
+    fun eliminarAlumno(@Path("id") id: Int): Call<Void>
 }

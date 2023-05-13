@@ -22,10 +22,10 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class MainActivity : AppCompatActivity() {
+class MainActivity2 : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: AlumnoAdapter
-    private lateinit var api: AlumnoApi
+    private lateinit var adapter: ProfesorAdapter
+    private lateinit var api: ProfesorApi
 
     // Obtener las credenciales de autenticación
     //val auth_username = "admin"
@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_main2)
 
         val fab_agregar: FloatingActionButton = findViewById<FloatingActionButton>(R.id.fab_agregar)
 
@@ -56,13 +56,13 @@ class MainActivity : AppCompatActivity() {
             .build()
 
         // Crea una instancia del servicio que utiliza la autenticación HTTP básica
-        api = retrofit.create(AlumnoApi::class.java)
+        api = retrofit.create(ProfesorApi::class.java)
 
         cargarDatos(api)
 
         // Cuando el usuario quiere agregar un nuevo registro
         fab_agregar.setOnClickListener(View.OnClickListener {
-            val i = Intent(getBaseContext(), CrearAlumnoActivity::class.java)
+            val i = Intent(getBaseContext(), CrearProfesorActivity::class.java)
             startActivity(i)
         })
     }
@@ -72,28 +72,28 @@ class MainActivity : AppCompatActivity() {
         cargarDatos(api)
     }
 
-    private fun cargarDatos(api: AlumnoApi) {
-        val call = api.obtenerAlumnos()
+    private fun cargarDatos(api: ProfesorApi) {
+        val call = api.obtenerProfesores()
         Log.i("URL", "$call")
-        call.enqueue(object : Callback<List<Alumno>> {
-            override fun onResponse(call: Call<List<Alumno>>, response: Response<List<Alumno>>) {
+        call.enqueue(object : Callback<List<Profesor>> {
+            override fun onResponse(call: Call<List<Profesor>>, response: Response<List<Profesor>>) {
                 if (response.isSuccessful) {
-                    val alumnos = response.body()
-                    if (alumnos != null) {
-                        adapter = AlumnoAdapter(alumnos)
+                    val profesores = response.body()
+                    if (profesores != null) {
+                        adapter = ProfesorAdapter(profesores)
                         recyclerView.adapter = adapter
 
                         // Establecemos el escuchador de clics en el adaptador
-                        adapter.setOnItemClickListener(object : AlumnoAdapter.OnItemClickListener {
-                            override fun onItemClick(alumno: Alumno) {
-                                val opciones = arrayOf("Modificar Alumno", "Eliminar Alumno")
+                        adapter.setOnItemClickListener(object : ProfesorAdapter.OnItemClickListener {
+                            override fun onItemClick(profesor: Profesor) {
+                                val opciones = arrayOf("Modificar Profesor", "Eliminar Profesor")
 
-                                AlertDialog.Builder(this@MainActivity)
-                                    .setTitle(alumno.nombre)
+                                AlertDialog.Builder(this@MainActivity2)
+                                    .setTitle(profesor.nombre)
                                     .setItems(opciones) { dialog, index ->
                                         when (index) {
-                                            0 -> Modificar(alumno)
-                                            1 -> eliminarAlumno(alumno, api)
+                                            0 -> Modificar(profesor)
+                                            1 -> eliminarProfesor(profesor, api)
                                         }
                                     }
                                     .setNegativeButton("Cancelar", null)
@@ -103,56 +103,56 @@ class MainActivity : AppCompatActivity() {
                     }
                 } else {
                     val error = response.errorBody()?.string()
-                    Log.e("API", "Error al obtener los alumnos: $error")
+                    Log.e("API", "Error al obtener los profesores: $error")
                     Toast.makeText(
-                        this@MainActivity,
-                        "Error al obtener los alumnos 1",
+                        this@MainActivity2,
+                        "Error al obtener los profesores 1",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
             }
 
-            override fun onFailure(call: Call<List<Alumno>>, t: Throwable) {
-                Log.e("API", "Error al obtener los alumnos: ${t.message}")
+            override fun onFailure(call: Call<List<Profesor>>, t: Throwable) {
+                Log.e("API", "Error al obtener los profesores: ${t.message}")
                 Toast.makeText(
-                    this@MainActivity,
-                    "Error al obtener los alumnos 2",
+                    this@MainActivity2,
+                    "Error al obtener los profesores 2",
                     Toast.LENGTH_SHORT
                 ).show()
             }
         })
     }
 
-    private fun Modificar(alumno: Alumno) {
+    private fun Modificar(profesor: Profesor) {
         // Creamos un intent para ir a la actividad de actualización de alumnos
-        val i = Intent(getBaseContext(), ActualizarAlumnoActivity::class.java)
+        val i = Intent(getBaseContext(), ActualizarProfesorActivity::class.java)
         // Pasamos el ID del alumno seleccionado a la actividad de actualización
-        i.putExtra("alumno_id", alumno.id)
-        i.putExtra("nombre", alumno.nombre)
-        i.putExtra("apellido", alumno.apellido)
-        i.putExtra("edad", alumno.edad)
+        i.putExtra("profesor_id", profesor.id)
+        i.putExtra("nombre", profesor.nombre)
+        i.putExtra("apellido", profesor.apellido)
+        i.putExtra("edad", profesor.edad)
         // Iniciamos la actividad de actualización de alumnos
         startActivity(i)
     }
 
-    private fun eliminarAlumno(alumno: Alumno, api: AlumnoApi) {
-        val alumnoTMP = Alumno(alumno.id,alumno.nombre, alumno.apellido, alumno.edad)
-        Log.e("API", "id : $alumno")
-        val llamada = api.eliminarAlumno(alumno.id)
+    private fun eliminarProfesor(profesor: Profesor, api: ProfesorApi) {
+        val profesorTMP = Profesor(profesor.id,profesor.nombre, profesor.apellido, profesor.edad)
+        Log.e("API", "id : $profesor")
+        val llamada = api.eliminarProfesor(profesor.id)
         llamada.enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 if (response.isSuccessful) {
-                    Toast.makeText(this@MainActivity, "Alumno eliminado", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@MainActivity2, "Profesor eliminado", Toast.LENGTH_SHORT).show()
                     cargarDatos(api)
                 } else {
                     val error = response.errorBody()?.string()
-                    Log.e("API", "Error al eliminar alumno : $error")
-                    Toast.makeText(this@MainActivity, "Error al eliminar alumno 1", Toast.LENGTH_SHORT).show()
+                    Log.e("API", "Error al eliminar profesor : $error")
+                    Toast.makeText(this@MainActivity2, "Error al eliminar profesor 1", Toast.LENGTH_SHORT).show()
                 }
             }
             override fun onFailure(call: Call<Void>, t: Throwable) {
-                Log.e("API", "Error al eliminar alumno : $t")
-                Toast.makeText(this@MainActivity, "Error al eliminar alumno 2", Toast.LENGTH_SHORT).show()
+                Log.e("API", "Error al eliminar profesor : $t")
+                Toast.makeText(this@MainActivity2, "Error al eliminar profesor 2", Toast.LENGTH_SHORT).show()
             }
         })
     }
@@ -161,6 +161,7 @@ class MainActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.menuopciones, menu)
         return true
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
         if (id == R.id.opcion1) {

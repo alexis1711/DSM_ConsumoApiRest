@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "240043441052",
+    "project_id": "consumoapi-a7c8c",
+    "storage_bucket": "consumoapi-a7c8c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:240043441052:android:aed4ccd9cdcf5f92186659",
+        "android_client_info": {
+          "package_name": "edu.udb.retrofitappcrud"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "240043441052-59lroe60g1o768q9525l4blil8e7fnjj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDg_9KMT2f-esqLKXfVZsRWTKspqaJDe-Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "240043441052-59lroe60g1o768q9525l4blil8e7fnjj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

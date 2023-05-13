@@ -16,7 +16,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class CrearAlumnoActivity : AppCompatActivity() {
+class CrearProfesorActivity : AppCompatActivity() {
 
     private lateinit var nombreEditText: EditText
     private lateinit var apellidoEditText: EditText
@@ -29,7 +29,7 @@ class CrearAlumnoActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_crear_alumno)
+        setContentView(R.layout.activity_crear_profesor)
 
         // Obtención de datos que envia actividad anterior
         val datos: Bundle? = intent.getExtras()
@@ -48,7 +48,7 @@ class CrearAlumnoActivity : AppCompatActivity() {
             val apellido = apellidoEditText.text.toString()
             val edad = edadEditText.text.toString().toInt()
 
-            val alumno = Alumno(0,nombre, apellido, edad)
+            val profesor = Profesor(0,nombre, apellido, edad)
             Log.e("API", "auth_username: $auth_username")
             Log.e("API", "auth_password: $auth_password")
 
@@ -69,24 +69,24 @@ class CrearAlumnoActivity : AppCompatActivity() {
                 .build()
 
             // Crea una instancia del servicio que utiliza la autenticación HTTP básica
-            val api = retrofit.create(AlumnoApi::class.java)
+            val api = retrofit.create(ProfesorApi::class.java)
 
-            api.crearAlumno(alumno).enqueue(object : Callback<Alumno> {
-                override fun onResponse(call: Call<Alumno>, response: Response<Alumno>) {
+            api.crearProfesor(profesor).enqueue(object : Callback<Profesor> {
+                override fun onResponse(call: Call<Profesor>, response: Response<Profesor>) {
                     if (response.isSuccessful) {
-                        Toast.makeText(this@CrearAlumnoActivity, "Alumno creado exitosamente", Toast.LENGTH_SHORT).show()
-                        val i = Intent(getBaseContext(), MainActivity::class.java)
+                        Toast.makeText(this@CrearProfesorActivity, "Profesor creado exitosamente", Toast.LENGTH_SHORT).show()
+                        val i = Intent(getBaseContext(), MainActivity2::class.java)
                         startActivity(i)
                     } else {
                         val error = response.errorBody()?.string()
-                        Log.e("API", "Error crear alumno: $error")
-                        Toast.makeText(this@CrearAlumnoActivity, "Error al crear el alumno", Toast.LENGTH_SHORT).show()
+                        Log.e("API", "Error crear profesor: $error")
+                        Toast.makeText(this@CrearProfesorActivity, "Error al crear el profesor", Toast.LENGTH_SHORT).show()
                     }
 
                 }
 
-                override fun onFailure(call: Call<Alumno>, t: Throwable) {
-                    Toast.makeText(this@CrearAlumnoActivity, "Error al crear el alumno", Toast.LENGTH_SHORT).show()
+                override fun onFailure(call: Call<Profesor>, t: Throwable) {
+                    Toast.makeText(this@CrearProfesorActivity, "Error al crear el alumno", Toast.LENGTH_SHORT).show()
                 }
             })
         }
